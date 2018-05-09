@@ -15,12 +15,11 @@ import org.kordamp.ikonli.materialdesign.MaterialDesign;
 import de.unistuttgart.ims.coref.annotator.Annotator;
 import de.unistuttgart.ims.coref.annotator.Constants;
 import de.unistuttgart.ims.coref.annotator.Constants.Strings;
-import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
-import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 import de.unistuttgart.ims.coref.annotator.DocumentWindow;
 import de.unistuttgart.ims.coref.annotator.FileFilters;
 import de.unistuttgart.ims.coref.annotator.Util;
+import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
+import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 
 public class EntityStatisticsAction extends DocumentWindowAction {
 
@@ -60,7 +59,7 @@ public class EntityStatisticsAction extends DocumentWindowAction {
 								if (mention.getDiscontinuous() != null)
 									surface += " " + mention.getDiscontinuous().getCoveredText();
 								p.printRecord(mention.getBegin(), mention.getEnd(), surface, entityNum,
-										entity.getLabel(), (entity instanceof EntityGroup), Util.isGeneric(entity),
+										entity.getLabel(), Util.isGroup(entity), Util.isGeneric(entity),
 										Util.isAmbiguous(mention), Util.isDifficult(mention));
 							}
 							entityNum++;

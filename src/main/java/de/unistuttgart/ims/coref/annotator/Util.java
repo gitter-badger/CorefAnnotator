@@ -146,8 +146,10 @@ public class Util {
 		return Util.contains(m.getFlags(), Constants.MENTION_FLAG_AMBIGUOUS);
 	}
 
-	public static boolean isGroup(Entity e) {
-		return (e.getMembers() != null && e.getMembers().size() > 1);
+	public static boolean isGroup(FeatureStructure e) {
+		if (e instanceof Entity)
+			return (((Entity) e).getMembers() != null && ((Entity) e).getMembers().size() > 1);
+		return false;
 	}
 
 	public static Meta getMeta(JCas jcas) {

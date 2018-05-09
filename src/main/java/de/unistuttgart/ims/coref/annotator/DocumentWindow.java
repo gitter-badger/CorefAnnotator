@@ -127,12 +127,12 @@ import de.unistuttgart.ims.coref.annotator.action.ViewFontSizeDecreaseAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewFontSizeIncreaseAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewShowCommentsAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewStyleSelectAction;
+import de.unistuttgart.ims.coref.annotator.api.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.Meta;
 import de.unistuttgart.ims.coref.annotator.api.v1.Comment;
 import de.unistuttgart.ims.coref.annotator.api.v1.CommentAnchor;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 import de.unistuttgart.ims.coref.annotator.document.CoreferenceModel;
 import de.unistuttgart.ims.coref.annotator.document.DocumentModel;
@@ -980,7 +980,7 @@ public class DocumentWindow extends AbstractWindow implements CaretListener, Tre
 			Annotator.logger.debug("Moving {} things", moved.size());
 			Op operation = null;
 			if (targetFS instanceof Entity) {
-				if (targetFS instanceof EntityGroup) {
+				if (Util.isGroup(targetFS)) {
 					operation = new Op.AddEntityToEntityGroup((EntityGroup) targetFS,
 							moved.select(n -> n.getFeatureStructure() instanceof Entity)
 									.collect(n -> n.getFeatureStructure()));

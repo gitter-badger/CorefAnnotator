@@ -11,25 +11,24 @@ import org.eclipse.collections.impl.factory.Multimaps;
 import de.unistuttgart.ims.coref.annotator.Span;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 
 public interface Op {
 
 	public class AddEntityToEntityGroup implements Op {
-		EntityGroup entityGroup;
+		Entity entityGroup;
 		ImmutableList<Entity> entities;
 
-		public AddEntityToEntityGroup(EntityGroup entityGroup, Iterable<Entity> entities) {
+		public AddEntityToEntityGroup(Entity entityGroup, Iterable<Entity> entities) {
 			this.entityGroup = entityGroup;
 			this.entities = Lists.immutable.withAll(entities);
 		}
 
-		public EntityGroup getEntityGroup() {
+		public Entity getEntityGroup() {
 			return entityGroup;
 		}
 
-		public void setEntityGroup(EntityGroup entityGroup) {
+		public void setEntityGroup(Entity entityGroup) {
 			this.entityGroup = entityGroup;
 		}
 
@@ -144,7 +143,7 @@ public interface Op {
 
 	public class GroupEntities implements Op {
 		ImmutableList<Entity> entities;
-		EntityGroup entityGroup;
+		Entity entityGroup;
 
 		public GroupEntities(Entity... entities) {
 			this.entities = Lists.immutable.of(entities);
@@ -158,7 +157,7 @@ public interface Op {
 			return entities;
 		}
 
-		public EntityGroup getEntityGroup() {
+		public Entity getEntityGroup() {
 			return entityGroup;
 		}
 
@@ -166,7 +165,7 @@ public interface Op {
 			this.entities = entities;
 		}
 
-		public void setEntityGroup(EntityGroup entityGroup) {
+		public void setEntityGroup(Entity entityGroup) {
 			this.entityGroup = entityGroup;
 		}
 
@@ -285,7 +284,7 @@ public interface Op {
 
 	public class RemoveEntities implements Op {
 		ImmutableList<Entity> entities;
-		MutableSetMultimap<Entity, EntityGroup> entityEntityGroupMap = Multimaps.mutable.set.empty();
+		MutableSetMultimap<Entity, Entity> entityEntityGroupMap = Multimaps.mutable.set.empty();
 
 		public RemoveEntities(Entity... entities) {
 			this.entities = Lists.immutable.of(entities);
@@ -307,14 +306,14 @@ public interface Op {
 
 	public class RemoveEntitiesFromEntityGroup implements Op {
 		ImmutableList<Entity> entities;
-		EntityGroup entityGroup;
+		Entity entityGroup;
 
-		public RemoveEntitiesFromEntityGroup(EntityGroup entityGroup, Iterable<Entity> entities) {
+		public RemoveEntitiesFromEntityGroup(Entity entityGroup, Iterable<Entity> entities) {
 			this.entities = Lists.immutable.withAll(entities);
 			this.entityGroup = entityGroup;
 		}
 
-		public RemoveEntitiesFromEntityGroup(EntityGroup entityGroup, Entity... entities) {
+		public RemoveEntitiesFromEntityGroup(Entity entityGroup, Entity... entities) {
 			this.entities = Lists.immutable.of(entities);
 			this.entityGroup = entityGroup;
 		}
@@ -327,11 +326,11 @@ public interface Op {
 			this.entities = entities;
 		}
 
-		public EntityGroup getEntityGroup() {
+		public Entity getEntityGroup() {
 			return entityGroup;
 		}
 
-		public void setEntityGroup(EntityGroup entityGroup) {
+		public void setEntityGroup(Entity entityGroup) {
 			this.entityGroup = entityGroup;
 		}
 

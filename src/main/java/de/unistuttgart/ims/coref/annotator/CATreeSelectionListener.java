@@ -14,7 +14,6 @@ import org.eclipse.collections.impl.factory.Lists;
 
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 
 public abstract class CATreeSelectionListener implements TreeSelectionListener {
@@ -74,7 +73,7 @@ public abstract class CATreeSelectionListener implements TreeSelectionListener {
 	}
 
 	public boolean isEntityGroup() {
-		return featureStructures.allSatisfy(f -> f instanceof EntityGroup);
+		return featureStructures.allSatisfy(f -> Util.isGroup((Entity) f));
 	}
 
 	public boolean isLeaf() {

@@ -16,9 +16,10 @@ import org.apache.uima.jcas.cas.StringArray;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Maps;
 
+import de.unistuttgart.ims.coref.annotator.Util;
+import de.unistuttgart.ims.coref.annotator.api.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 
 public class MergeAnnotations extends JCasAnnotator_ImplBase {
@@ -39,8 +40,8 @@ public class MergeAnnotations extends JCasAnnotator_ImplBase {
 			// handle entities
 			for (Entity oldEntity : JCasUtil.select(jcas2, Entity.class)) {
 				Entity newEntity;
-				if (oldEntity instanceof EntityGroup) {
-					newEntity = new EntityGroup(jcas);
+				if (Util.isGroup(oldEntity)) {
+					newEntity = new Entity(jcas);
 				} else {
 					newEntity = new Entity(jcas);
 				}

@@ -35,7 +35,6 @@ import de.unistuttgart.ims.coref.annotator.Util;
 import de.unistuttgart.ims.coref.annotator.api.v1.Comment;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 import de.unistuttgart.ims.coref.annotator.document.Event.Type;
 import de.unistuttgart.ims.coref.annotator.document.Op.AddEntityToEntityGroup;
@@ -84,7 +83,7 @@ public class CoreferenceModel {
 
 	MutableSetMultimap<Entity, Mention> entityMentionMap = Multimaps.mutable.set.empty();
 
-	MutableSetMultimap<Entity, EntityGroup> entityEntityGroupMap = Multimaps.mutable.set.empty();
+	MutableSetMultimap<Entity, Entity> entityEntityGroupMap = Multimaps.mutable.set.empty();
 
 	Map<Character, Entity> keyMap = Maps.mutable.empty();
 
@@ -201,12 +200,8 @@ public class CoreferenceModel {
 		return e;
 	}
 
-	protected EntityGroup createEntityGroup(String l, int initialSize) {
-		EntityGroup e = new EntityGroup(jcas);
-		e.setColor(colorMap.getNextColor().getRGB());
-		e.setLabel(l);
-		e.setFlags(new StringArray(jcas, 0));
-		e.addToIndexes();
+	protected Entity createEntityGroup(String l, int initialSize) {
+		Entity e = createEntity(l);
 		e.setMembers(new FSArray(jcas, initialSize));
 		return e;
 	}
@@ -357,7 +352,7 @@ public class CoreferenceModel {
 		} else if (operation instanceof Op.GroupEntities) {
 			Op.GroupEntities op = (GroupEntities) operation;
 			Annotator.logger.trace("Forming entity group with {}.", op.getEntities());
-			EntityGroup eg = createEntityGroup(
+			Entity eg = createEntityGroup(
 					op.getEntities().subList(0, 2).select(e -> e.getLabel() != null).collect(e -> e.getLabel())
 							.makeString(" " + Annotator.getString(Constants.Strings.ENTITY_GROUP_AND) + " "),
 					op.getEntities().size());
@@ -618,7 +613,7 @@ public class CoreferenceModel {
 			m.removeFromIndexes();
 			// TODO: remove parts
 		}
-		for (EntityGroup group : entityEntityGroupMap.get(entity)) {
+		for (Entity group : entityEntityGroupMap.get(entity)) {
 			group.setMembers(Util.removeFrom(jcas, group.getMembers(), entity));
 		}
 
@@ -652,7 +647,7 @@ public class CoreferenceModel {
 	 * @param eg
 	 * @param entity
 	 */
-	private void removeFrom(EntityGroup eg, Entity entity) {
+	private void removeFrom(Entity eg, Entity entity) {
 		FSArray oldArray = eg.getMembers();
 		FSArray arr = new FSArray(jcas, eg.getMembers().size() - 1);
 
@@ -755,7 +750,7 @@ public class CoreferenceModel {
 			op.getEntities().forEach(e -> {
 				e.addToIndexes();
 				if (op.entityEntityGroupMap.containsKey(e)) {
-					for (EntityGroup group : op.entityEntityGroupMap.get(e))
+					for (Entity group : op.entityEntityGroupMap.get(e))
 						group.setMembers(Util.addTo(jcas, group.getMembers(), e));
 				}
 			});
