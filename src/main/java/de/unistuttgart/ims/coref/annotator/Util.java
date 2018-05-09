@@ -146,6 +146,10 @@ public class Util {
 		return Util.contains(m.getFlags(), Constants.MENTION_FLAG_AMBIGUOUS);
 	}
 
+	public static boolean isGroup(Entity e) {
+		return (e.getMembers() != null && e.getMembers().size() > 1);
+	}
+
 	public static Meta getMeta(JCas jcas) {
 		if (!JCasUtil.exists(jcas, Meta.class)) {
 			Meta m = new Meta(jcas);
