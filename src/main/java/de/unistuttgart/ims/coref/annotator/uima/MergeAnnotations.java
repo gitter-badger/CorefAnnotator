@@ -17,7 +17,6 @@ import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.impl.factory.Maps;
 
 import de.unistuttgart.ims.coref.annotator.Util;
-import de.unistuttgart.ims.coref.annotator.api.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
@@ -61,13 +60,13 @@ public class MergeAnnotations extends JCasAnnotator_ImplBase {
 			}
 
 			// handle entity groups
-			for (EntityGroup oldEntity : JCasUtil.select(jcas2, EntityGroup.class)) {
-				EntityGroup newEntity = (EntityGroup) entityMap.get(oldEntity);
-				FSArray arr = new FSArray(jcas, oldEntity.getMembers().size());
-				arr.addToIndexes();
-				newEntity.setMembers(arr);
-				for (int i = 0; i < oldEntity.getMembers().size(); i++) {
-					newEntity.setMembers(i, entityMap.get(oldEntity.getMembers(i)));
+			for (Entity oldEntity : JCasUtil.select(jcas2, Entity.class)) {
+				if (Util.isGroup(oldEntity)) {
+					Entity newEntity = entityMap.get(oldEntity);
+					FSArray arr = new FSArray(jcas, oldEntity.getMembers().size());
+					newEntity.setMembers(arr);
+					for (int i = 0; i < oldEntity.getMembers().size(); i++)
+						newEntity.setMembers(i, oldEntity.getMembers(i));
 				}
 			}
 
