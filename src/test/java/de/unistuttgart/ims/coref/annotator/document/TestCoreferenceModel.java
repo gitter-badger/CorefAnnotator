@@ -24,9 +24,9 @@ import org.junit.Test;
 
 import de.unistuttgart.ims.coref.annotator.Constants;
 import de.unistuttgart.ims.coref.annotator.Span;
+import de.unistuttgart.ims.coref.annotator.Util;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 import de.unistuttgart.ims.coref.annotator.document.Event.Type;
 
@@ -330,7 +330,7 @@ public class TestCoreferenceModel {
 		assertTrue(JCasUtil.exists(jcas, Mention.class));
 		assertEquals(2, JCasUtil.select(jcas, Entity.class).size());
 		assertEquals(2, JCasUtil.select(jcas, Mention.class).size());
-		assertFalse(JCasUtil.exists(jcas, EntityGroup.class));
+		assertTrue(Util.getGroups(jcas).isEmpty());
 
 		model.edit(new Op.GroupEntities(e1, e2));
 
@@ -338,9 +338,9 @@ public class TestCoreferenceModel {
 		assertTrue(JCasUtil.exists(jcas, Mention.class));
 		assertEquals(3, JCasUtil.select(jcas, Entity.class).size());
 		assertEquals(2, JCasUtil.select(jcas, Mention.class).size());
-		assertTrue(JCasUtil.exists(jcas, EntityGroup.class));
+		assertFalse(Util.getGroups(jcas).isEmpty());
 
-		EntityGroup eg = JCasUtil.select(jcas, EntityGroup.class).iterator().next();
+		Entity eg = Util.getGroups(jcas).getFirst();
 		assertEquals(2, eg.getMembers().size());
 
 		model.edit(new Op.RemoveEntitiesFromEntityGroup(eg, e1));
@@ -349,9 +349,9 @@ public class TestCoreferenceModel {
 		assertTrue(JCasUtil.exists(jcas, Mention.class));
 		assertEquals(3, JCasUtil.select(jcas, Entity.class).size());
 		assertEquals(2, JCasUtil.select(jcas, Mention.class).size());
-		assertTrue(JCasUtil.exists(jcas, EntityGroup.class));
+		assertFalse(Util.getGroups(jcas).isEmpty());
 
-		eg = JCasUtil.select(jcas, EntityGroup.class).iterator().next();
+		eg = Util.getGroups(jcas).getFirst();
 		assertEquals(1, eg.getMembers().size());
 
 		model.undo();
@@ -360,8 +360,8 @@ public class TestCoreferenceModel {
 		assertTrue(JCasUtil.exists(jcas, Mention.class));
 		assertEquals(3, JCasUtil.select(jcas, Entity.class).size());
 		assertEquals(2, JCasUtil.select(jcas, Mention.class).size());
-		assertTrue(JCasUtil.exists(jcas, EntityGroup.class));
-		eg = JCasUtil.select(jcas, EntityGroup.class).iterator().next();
+		assertFalse(Util.getGroups(jcas).isEmpty());
+		eg = Util.getGroups(jcas).getFirst();
 		assertEquals(2, eg.getMembers().size());
 
 	}
@@ -470,7 +470,7 @@ public class TestCoreferenceModel {
 
 		model.edit(new Op.GroupEntities(entities.get(0), entities.get(1)));
 
-		EntityGroup group = JCasUtil.select(jcas, EntityGroup.class).iterator().next();
+		Entity group = Util.getGroups(jcas).getFirst();
 		assertEquals(2, group.getMembers().size());
 		assertEquals(entities.get(0), group.getMembers(0));
 		assertEquals(entities.get(1), group.getMembers(1));
