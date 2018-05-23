@@ -64,7 +64,6 @@ import de.unistuttgart.ims.coref.annotator.action.SelectedFileOpenAction;
 import de.unistuttgart.ims.coref.annotator.api.v1.CommentAnchor;
 import de.unistuttgart.ims.coref.annotator.api.v1.DetachedMentionPart;
 import de.unistuttgart.ims.coref.annotator.api.v1.Entity;
-import de.unistuttgart.ims.coref.annotator.api.v1.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.v1.Mention;
 import de.unistuttgart.ims.coref.annotator.comp.BoundLabel;
 import de.unistuttgart.ims.coref.annotator.comp.ColorIcon;
@@ -125,7 +124,7 @@ public class CompareMentionsWindow extends AbstractWindow
 			}
 			for (Entity e : JCasUtil.select(jcas, Entity.class)) {
 				entities++;
-				if (e instanceof EntityGroup)
+				if (Util.isGroup(e))
 					entityGroups++;
 			}
 		}
@@ -307,9 +306,6 @@ public class CompareMentionsWindow extends AbstractWindow
 	}
 
 	public void entityEvent(Event event, Entity entity) {
-	}
-
-	public void entityGroupEvent(Event event, EntityGroup entity) {
 	}
 
 	protected double getAgreementInSpan(Span s) {
