@@ -12,6 +12,7 @@ import org.apache.uima.jcas.cas.FSArray;
 import org.apache.uima.jcas.cas.StringArray;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
+import org.eclipse.collections.api.list.ImmutableList;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.factory.Lists;
 
@@ -150,6 +151,11 @@ public class Util {
 		if (e instanceof Entity)
 			return (((Entity) e).getMembers() != null && ((Entity) e).getMembers().size() > 1);
 		return false;
+	}
+
+	public static ImmutableList<Entity> getGroups(JCas jcas) {
+		MutableList<Entity> ml = Lists.mutable.withAll(JCasUtil.select(jcas, Entity.class));
+		return ml.select(e -> Util.isGroup(e)).toImmutable();
 	}
 
 	public static Meta getMeta(JCas jcas) {
