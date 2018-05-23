@@ -127,7 +127,6 @@ import de.unistuttgart.ims.coref.annotator.action.ViewFontSizeDecreaseAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewFontSizeIncreaseAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewShowCommentsAction;
 import de.unistuttgart.ims.coref.annotator.action.ViewStyleSelectAction;
-import de.unistuttgart.ims.coref.annotator.api.EntityGroup;
 import de.unistuttgart.ims.coref.annotator.api.Meta;
 import de.unistuttgart.ims.coref.annotator.api.v1.Comment;
 import de.unistuttgart.ims.coref.annotator.api.v1.CommentAnchor;
@@ -978,7 +977,7 @@ public class DocumentWindow extends AbstractWindow implements CaretListener, Tre
 			Op operation = null;
 			if (targetFS instanceof Entity) {
 				if (Util.isGroup(targetFS)) {
-					operation = new Op.AddEntityToEntityGroup((EntityGroup) targetFS,
+					operation = new Op.AddEntityToEntityGroup((Entity) targetFS,
 							moved.select(n -> n.getFeatureStructure() instanceof Entity)
 									.collect(n -> n.getFeatureStructure()));
 				}
@@ -1077,7 +1076,7 @@ public class DocumentWindow extends AbstractWindow implements CaretListener, Tre
 				lab1.setText(entity.getKey() + ": " + entity.getLabel() + " (" + treeNode.getChildCount() + ")");
 			} else if (!(treeNode.getParent().isEntity()))
 				lab1.setText(entity.getLabel() + " (" + treeNode.getChildCount() + ")");
-			if (entity instanceof EntityGroup) {
+			if (Util.isGroup(entity)) {
 				panel.add(Box.createRigidArea(new Dimension(5, 5)));
 				panel.add(new JLabel(FontIcon.of(MaterialDesign.MDI_ACCOUNT_MULTIPLE)));
 			}
