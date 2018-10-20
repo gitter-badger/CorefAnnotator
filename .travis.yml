@@ -14,4 +14,6 @@ deploy:
   file_glob: true
   on:
     repo: nilsreiter/CorefAnnotator
-    branch: feature/clouddeployment
+    tags: true
+  draft: true
+  name: $TRAVIS_TAG
